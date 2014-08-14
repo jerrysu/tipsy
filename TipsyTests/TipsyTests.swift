@@ -1,6 +1,6 @@
 //
-//  tipsTests.swift
-//  tipsTests
+//  TipsyTests.swift
+//  TipsyTests
 //
 //  Created by Jerry Su on 8/13/14.
 //  Copyright (c) 2014 jsu. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class tipsTests: XCTestCase {
+class TipsyTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  tips
+//  Tipsy
 //
 //  Created by Jerry Su on 8/13/14.
 //  Copyright (c) 2014 jsu. All rights reserved.
