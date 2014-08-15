@@ -10,11 +10,14 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
                             
+    let TIP_CONTROL_DEFAULT_SELECTED_INDEX: Int = 1
+
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tipControl: UISegmentedControl!
 
+    let defaults = NSUserDefaults.standardUserDefaults()
     let formatter = NSNumberFormatter()
 
     var billFieldValue: Int = 0
@@ -27,9 +30,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
         billField.delegate = self;
         billField.placeholder = formatter.stringFromNumber(0)
 
-        if (billFieldValue > 0) {
-            billField.text = formatter.stringFromNumber(Double(billFieldValue) / 100)
+        var tipControlSelected = TIP_CONTROL_DEFAULT_SELECTED_INDEX
+
+        if let lastSetDate = defaults.objectForKey("LastSetDate") as? NSDate {
+            let timeInterval = lastSetDate.timeIntervalSinceNow
+            if abs(timeInterval) < 600 {
+                billFieldValue = defaults.integerForKey("BillFieldValue")
+                tipControlSelected = defaults.integerForKey("TipControlSelected")
+
+                if billFieldValue > 0 {
+                    billField.text = formatter.stringFromNumber(Double(billFieldValue) / 100)
+                }
+            }
         }
+
+        tipControl.selectedSegmentIndex = tipControlSelected
 
         self.calculateTipAndTotal()
     }
@@ -53,11 +68,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         self.calculateTipAndTotal()
 
+        defaults.setInteger(billFieldValue, forKey: "BillFieldValue")
+        defaults.setObject(NSDate(), forKey: "LastSetDate")
+
         return false
     }
 
     @IBAction func onTipControlChanged(sender: AnyObject) {
         self.calculateTipAndTotal()
+        defaults.setInteger(tipControl.selectedSegmentIndex, forKey: "TipControlSelected")
     }
 
     func calculateTipAndTotal() {
