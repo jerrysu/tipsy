@@ -8,30 +8,68 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
                             
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tipControl: UISegmentedControl!
 
+    let formatter = NSNumberFormatter()
+
+    var billFieldValue: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        tipLabel.text = "$0.00"
-        totalLabel.text = "$0.00"
+
+        formatter.numberStyle = .CurrencyStyle
+
+        billField.delegate = self;
+        billField.placeholder = formatter.stringFromNumber(0)
+
+        if (billFieldValue > 0) {
+            billField.text = formatter.stringFromNumber(Double(billFieldValue) / 100)
+        }
+
+        self.calculateTipAndTotal()
     }
 
-    @IBAction func onEditingChanged(sender: AnyObject) {
+    func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
+        if (string >= "0" && string <= "9") {
+            // Prevent the Integer from overflowing
+            // FIXME: Find a better way to fix this.
+            var newValue = billFieldValue &* 10 &+ string.toInt()!
+            if (newValue > billFieldValue) {
+                billFieldValue = newValue
+            }
+        } else if (string == "") {
+            billFieldValue = billFieldValue / 10;
+        }
+
+        if (billFieldValue > 0) {
+            textField.text = formatter.stringFromNumber(Double(billFieldValue) / 100)
+        } else {
+            textField.text = ""
+        }
+        self.calculateTipAndTotal()
+
+        return false
+    }
+
+    @IBAction func onTipControlChanged(sender: AnyObject) {
+        self.calculateTipAndTotal()
+    }
+
+    func calculateTipAndTotal() {
         var tipPercentages = [0.18, 0.2, 0.22]
         var tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
 
-        var billAmount = billField.text.bridgeToObjectiveC().doubleValue
+        var billAmount = Double(billFieldValue) / 100
         var tip = billAmount * tipPercentage
         var total = billAmount + tip
 
-        tipLabel.text = String(format: "$%.2f", tip)
-        totalLabel.text = String(format: "$%.2f", total)
+        tipLabel.text = formatter.stringFromNumber(tip)
+        totalLabel.text = formatter.stringFromNumber(total)
     }
 
     @IBAction func onTap(sender: AnyObject) {
