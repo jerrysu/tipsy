@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
-                            
+class ViewController: UIViewController, UITextFieldDelegate, SettingsViewControllerDelegate {
+
     let TIP_CONTROL_DEFAULT_SELECTED_INDEX: Int = 1
+    let TIP_CONTROL_DEFAULT_PERCENTAGES: Array<Double> = [0.1, 0.15, 0.2]
 
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipLabel: UILabel!
@@ -21,6 +22,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let formatter = NSNumberFormatter()
 
     var billFieldValue: Int = 0
+
+    var tipPercentages: Array<Double>
+
+    init(coder aDecoder: NSCoder!) {
+        formatter.numberStyle = .CurrencyStyle
+
+        if let storedPercentages = defaults.arrayForKey("TipPercentages") {
+            tipPercentages = storedPercentages as Array<Double>
+        } else {
+            tipPercentages = TIP_CONTROL_DEFAULT_PERCENTAGES
+        }
+
+        super.init(coder: aDecoder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +61,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
         tipControl.selectedSegmentIndex = tipControlSelected
 
+        self.setTipControlTitles()
         self.calculateTipAndTotal()
     }
 
@@ -74,13 +90,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return false
     }
 
+    func setTipControlTitles() {
+        for (index, percentage) in enumerate(tipPercentages) {
+            let title = String(format: "%d%%", Int(round(percentage * 100)))
+            tipControl.setTitle(title, forSegmentAtIndex: index)
+        }
+    }
+
     @IBAction func onTipControlChanged(sender: AnyObject) {
         self.calculateTipAndTotal()
         defaults.setInteger(tipControl.selectedSegmentIndex, forKey: "TipControlSelected")
     }
 
     func calculateTipAndTotal() {
-        var tipPercentages = [0.18, 0.2, 0.22]
         var tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
 
         var billAmount = Double(billFieldValue) / 100
@@ -93,6 +115,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func onTap(sender: AnyObject) {
         view.endEditing(true)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        if segue.identifier == "settings" {
+            let settingsViewController = segue.destinationViewController as SettingsViewController
+            settingsViewController.delegate = self
+            settingsViewController.tipPercentages = tipPercentages
+        }
+    }
+
+    func onSettingsDone(controller: SettingsViewController) {
+        tipPercentages = controller.tipPercentages
+        self.setTipControlTitles()
+
+        controller.navigationController.popViewControllerAnimated(true)
     }
 }
 
