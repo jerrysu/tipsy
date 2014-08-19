@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate, SettingsViewControllerDelegate {
+class ViewController: ThemeableViewController, UITextFieldDelegate, SettingsViewControllerDelegate {
 
     let TIP_CONTROL_DEFAULT_SELECTED_INDEX: Int = 1
     let TIP_CONTROL_DEFAULT_PERCENTAGES: Array<Double> = [0.1, 0.15, 0.2]
@@ -35,6 +35,10 @@ class ViewController: UIViewController, UITextFieldDelegate, SettingsViewControl
         }
 
         super.init(coder: aDecoder)
+
+        if let storedTheme = Theme.fromRaw(defaults.integerForKey("Theme")) {
+            currentTheme = storedTheme
+        }
     }
 
     override func viewDidLoad() {
@@ -122,14 +126,15 @@ class ViewController: UIViewController, UITextFieldDelegate, SettingsViewControl
             let settingsViewController = segue.destinationViewController as SettingsViewController
             settingsViewController.delegate = self
             settingsViewController.tipPercentages = tipPercentages
+            settingsViewController.currentTheme = currentTheme
         }
     }
 
     func onSettingsDone(controller: SettingsViewController) {
         tipPercentages = controller.tipPercentages
+        currentTheme = controller.currentTheme
         self.setTipControlTitles()
 
         controller.navigationController.popViewControllerAnimated(true)
     }
 }
-

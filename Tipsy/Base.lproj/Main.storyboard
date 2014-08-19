@@ -138,44 +138,62 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1" stepValue="0.01" id="qNN-JH-Uwd">
-                                <rect key="frame" x="207" y="222" width="94" height="29"/>
+                                <rect key="frame" x="206" y="222" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="onValueChanged:" destination="Nfj-ZF-NcL" eventType="valueChanged" id="FZw-FA-Zk9"/>
                                 </connections>
                             </stepper>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="10%" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="6k8-nl-c4d">
-                                <rect key="frame" x="144" y="222" width="55" height="30"/>
+                                <rect key="frame" x="143" y="222" width="55" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1" stepValue="0.01" id="s57-3N-Rjv">
-                                <rect key="frame" x="207" y="184" width="94" height="29"/>
+                                <rect key="frame" x="206" y="184" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="onValueChanged:" destination="Nfj-ZF-NcL" eventType="valueChanged" id="ULz-01-d2O"/>
                                 </connections>
                             </stepper>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="15%" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="kCt-ab-Xs2">
-                                <rect key="frame" x="144" y="184" width="55" height="30"/>
+                                <rect key="frame" x="143" y="184" width="55" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1" stepValue="0.01" id="vzy-GQ-2Jn">
-                                <rect key="frame" x="207" y="146" width="94" height="29"/>
+                                <rect key="frame" x="206" y="146" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="onValueChanged:" destination="Nfj-ZF-NcL" eventType="valueChanged" id="6Lr-q2-pEC"/>
                                 </connections>
                             </stepper>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="20%" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="Dna-QG-5Wq">
-                                <rect key="frame" x="144" y="146" width="55" height="30"/>
+                                <rect key="frame" x="143" y="146" width="55" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a theme:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QCX-nd-ETJ">
+                                <rect key="frame" x="20" y="273" width="124" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="rkF-yR-Wkc">
+                                <rect key="frame" x="20" y="307" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Light"/>
+                                    <segment title="Dark"/>
+                                </segments>
+                                <connections>
+                                    <action selector="onThemeControlChanged:" destination="Nfj-ZF-NcL" eventType="valueChanged" id="qXA-YK-37w"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -187,6 +205,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="themeControl" destination="rkF-yR-Wkc" id="hCb-AA-ZCr"/>
                         <outlet property="tipExcellentField" destination="Dna-QG-5Wq" id="dn9-Cp-nMv"/>
                         <outlet property="tipExcellentStepper" destination="vzy-GQ-2Jn" id="s1r-1s-niG"/>
                         <outlet property="tipSatisfactoryField" destination="kCt-ab-Xs2" id="fYm-W5-ypn"/>

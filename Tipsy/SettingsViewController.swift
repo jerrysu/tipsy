@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: ThemeableViewController {
 
     var delegate: SettingsViewControllerDelegate?
 
@@ -49,6 +49,8 @@ class SettingsViewController: UIViewController {
             stepperMap[index].value = percentage
             fieldMap[index].text = String(format: "%d%%", Int(round(percentage * 100)))
         }
+
+        themeControl.selectedSegmentIndex = currentTheme.toRaw()
     }
 
     @IBAction func onValueChanged(sender: UIStepper) {
@@ -58,9 +60,16 @@ class SettingsViewController: UIViewController {
         }
     }
 
+    @IBAction func onThemeControlChanged(sender: UISegmentedControl) {
+        if let theme = Theme.fromRaw(themeControl.selectedSegmentIndex) {
+            self.applyTheme(theme)
+        }
+    }
+
     @IBAction func onSave(sender: AnyObject) {
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setObject(tipPercentages, forKey: "TipPercentages")
+        defaults.setInteger(currentTheme.toRaw(), forKey: "Theme")
 
         if delegate {
             delegate!.onSettingsDone(self)
