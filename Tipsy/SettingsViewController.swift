@@ -71,7 +71,7 @@ class SettingsViewController: ThemeableViewController {
         defaults.setObject(tipPercentages, forKey: "TipPercentages")
         defaults.setInteger(currentTheme.toRaw(), forKey: "Theme")
 
-        if delegate {
+        if delegate != nil {
             delegate!.onSettingsDone(self)
         }
     }

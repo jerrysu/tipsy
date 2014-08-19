@@ -25,7 +25,7 @@ class ViewController: ThemeableViewController, UITextFieldDelegate, SettingsView
 
     var tipPercentages: Array<Double>
 
-    init(coder aDecoder: NSCoder!) {
+    override init(coder aDecoder: NSCoder) {
         formatter.numberStyle = .CurrencyStyle
 
         if let storedPercentages = defaults.arrayForKey("TipPercentages") {
