@@ -11,7 +11,6 @@ import UIKit
 class ViewController: ThemeableViewController, UITextFieldDelegate, SettingsViewControllerDelegate {
 
     let TIP_CONTROL_DEFAULT_SELECTED_INDEX: Int = 1
-    let TIP_CONTROL_DEFAULT_PERCENTAGES: Array<Double> = [0.1, 0.15, 0.2]
 
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipLabel: UILabel!
@@ -23,18 +22,16 @@ class ViewController: ThemeableViewController, UITextFieldDelegate, SettingsView
 
     var billFieldValue: Int = 0
 
-    var tipPercentages: Array<Double>
+    var tipPercentages: Array<Double> = [0.1, 0.15, 0.2]
 
     override init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
         formatter.numberStyle = .CurrencyStyle
 
-        if let storedPercentages = defaults.arrayForKey("TipPercentages") {
+        if let storedPercentages: AnyObject? = defaults.objectForKey("TipPercentages") {
             tipPercentages = storedPercentages as Array<Double>
-        } else {
-            tipPercentages = TIP_CONTROL_DEFAULT_PERCENTAGES
         }
-
-        super.init(coder: aDecoder)
 
         if let storedTheme = Theme.fromRaw(defaults.integerForKey("Theme")) {
             currentTheme = storedTheme

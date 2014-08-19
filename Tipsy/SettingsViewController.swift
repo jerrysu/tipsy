@@ -55,7 +55,9 @@ class SettingsViewController: ThemeableViewController {
 
     @IBAction func onValueChanged(sender: UIStepper) {
         if let index = find(stepperMap, sender) {
-            tipPercentages[index] = sender.value
+            tipPercentages[index] = sender.value as Double
+            println(index)
+            println(sender.value)
             fieldMap[index].text = String(format: "%d%%", Int(round(sender.value * 100)))
         }
     }
@@ -68,7 +70,12 @@ class SettingsViewController: ThemeableViewController {
 
     @IBAction func onSave(sender: AnyObject) {
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(tipPercentages, forKey: "TipPercentages")
+        var tipPercentagesArray: NSArray = [
+            tipPercentages[0] as NSNumber,
+            tipPercentages[1] as NSNumber,
+            tipPercentages[2] as NSNumber
+        ]
+        defaults.setObject(tipPercentagesArray, forKey: "TipPercentages")
         defaults.setInteger(currentTheme.toRaw(), forKey: "Theme")
 
         if delegate != nil {
